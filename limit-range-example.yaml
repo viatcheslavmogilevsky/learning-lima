@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: example-limitrange
+spec:
+  limits:
+  # - type: PersistentVolumeClaim
+  #   max:
+  #     storage: 1Ti
+  - type: Container
+    max:
+      cpu: "100"
+      memory: 1Ti
+    min:
+      cpu: 10m
+      memory: 1Mi
+    maxLimitRequestRatio:
+      cpu: "100"
+      memory: "100"
+    default:
+      cpu: 200m 
+      memory: 400Mi
+    defaultRequest:
+      cpu: 100m 
+      memory: 200Mi
+
+

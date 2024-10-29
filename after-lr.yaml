@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubectl.kubernetes.io/restartedAt: "2023-11-14T03:27:10+01:00"
+    kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu, memory request for container
+      nginx-container; cpu, memory limit for container nginx-container'
+  creationTimestamp: "2023-11-14T02:27:14Z"
+  generateName: example-deployment-54c58cb445-
+  labels:
+    app: example
+    pod-template-hash: 54c58cb445
+  name: example-deployment-54c58cb445-9wk4q
+  namespace: test
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: example-deployment-54c58cb445
+    uid: 878a524b-5631-443c-b677-275a057dc1af
+  resourceVersion: "18559"
+  uid: 210ce491-3fa8-41e8-b042-485fa5f1620c
+spec:
+  containers:
+  - image: nginx:latest
+    imagePullPolicy: Always
+    name: nginx-container
+    ports:
+    - containerPort: 80
+      protocol: TCP
+    resources:
+      limits:
+        cpu: 250m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-spdf5
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: lima-k8s
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-spdf5
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2023-11-14T02:27:14Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2023-11-14T02:27:19Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2023-11-14T02:27:19Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2023-11-14T02:27:14Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://c9aec5c47c0bc65fe54ee8854b518493f1f3600ebea09fb718e31a6eea48136d
+    image: docker.io/library/nginx:latest
+    imageID: docker.io/library/nginx@sha256:86e53c4c16a6a276b204b0fd3a8143d86547c967dc8258b3d47c3a21bb68d3c6
+    lastState: {}
+    name: nginx-container
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2023-11-14T02:27:18Z"
+  hostIP: 192.168.5.15
+  phase: Running
+  podIP: 10.244.0.9
+  podIPs:
+  - ip: 10.244.0.9
+  qosClass: Burstable
+  startTime: "2023-11-14T02:27:14Z"

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: example
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      initContainers:
+      - name: init-container-1
+        image: busybox:1.34
+        command: ["echo", "Init Container 1 is running"]
+        # resources:
+        #   limits:
+        #     memory: 500Mi
+        #     cpu: 500m
+        #   requests:
+        #     memory: 200Mi
+        #     cpu: 200m
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        # resources:
+        #   limits:
+        #     memory: 1Gi
+        #     cpu: 1
+        #   requests:
+        #     memory: 250Mi
+        #     cpu: 250m
+        ports:
+        - containerPort: 80
+

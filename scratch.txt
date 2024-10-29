@@ -1,0 +1,59 @@
+brew install lima
+ls -lat /opt/homebrew/share/lima/templates
+less /opt/homebrew/share/lima/templates/k8s.yaml
+cp /opt/homebrew/share/lima/templates/k8s.yaml ./k8s-32GiB.yaml
+vim ./k8s-32GiB.yaml
+limactl start --name=k8s --tty=false k8s-32GiB.yaml
+export KUBECONFIG="$HOME/.lima/k8s/copied-from-guest/kubeconfig.yaml"
+kubectl get pods -A
+limactl list
+limactl stop k8s
+limactl list
+limactl start k8s
+limactl list
+
+
+brew install docker
+brew install docker-compose
+docker context create lima-docker --docker "host=unix://$HOME/.lima/docker/sock/docker.sock"
+docker context use lima-docker
+docker context ls
+cp /opt/homebrew/share/lima/templates/docker.yaml ./docker-64GiB.yaml
+limactl start --name=docker --tty=false docker-64GiB.yaml
+limactl stop docker
+limactl edit docker
+limatcl rm docker
+cp docker-64GiB.yaml docker-32GiB.yaml
+rm docker-64GiB.yaml
+
+limactl list
+limactl start docker
+docker system df
+docker system prune -a
+limactl stop docker
+limactl rm docker
+
+
+
+
+
+
+
+limactl start --name=k8s --tty=false --disk=32 template://k8s
+export KUBECONFIG="$HOME/.lima/k8s/copied-from-guest/kubeconfig.yaml"
+kubectl get pods -A
+limactl shell --tty=false k8s df
+limactl shell --tty=false k8s kubectl get pods -A
+limactl shell k8s
+k9s -A
+
+limactl list
+limactl start k8s
+
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+EDITOR="subl --wait" k9s -A
+
+limactl list
+limactl stop k8s
+limactl rm k8s
+limactl list
